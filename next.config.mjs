@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: '/velamoving',
+  assetPrefix: '/velamoving',
   typescript: {
     ignoreBuildErrors: true,
   },
