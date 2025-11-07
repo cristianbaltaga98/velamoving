@@ -1,0 +1,237 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* VelaMoving - Black and White color scheme */
+  --background: #ffffff;
+  --foreground: #000000;
+  --card: #f8f8f8;
+  --card-foreground: #000000;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
+  --secondary: #333333;
+  --secondary-foreground: #ffffff;
+  --accent: #000000;
+  --accent-foreground: #ffffff;
+  --muted: #f0f0f0;
+  --muted-foreground: #666666;
+  --border: #e0e0e0;
+  --destructive: #000000;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #1a1a1a;
+  --card-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --secondary: #cccccc;
+  --secondary-foreground: #000000;
+  --accent: #ffffff;
+  --accent-foreground: #000000;
+  --muted: #2a2a2a;
+  --muted-foreground: #999999;
+  --border: #333333;
+}
+
+@theme inline {
+  --font-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-mono: "Fira Code", "Fira Code Fallback", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+  --color-chart-1: oklch(0.646 0.222 41.116);
+  --color-chart-2: oklch(0.6 0.118 184.704);
+  --color-chart-3: oklch(0.398 0.07 227.392);
+  --color-chart-4: oklch(0.828 0.189 84.429);
+  --color-chart-5: oklch(0.769 0.188 70.08);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--background);
+  --color-sidebar-foreground: var(--foreground);
+  --color-sidebar-primary: var(--primary);
+  --color-sidebar-primary-foreground: var(--primary-foreground);
+  --color-sidebar-accent: var(--accent);
+  --color-sidebar-accent-foreground: var(--accent-foreground);
+  --color-sidebar-border: var(--border);
+  --color-sidebar-ring: var(--primary);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-4xl md:text-5xl font-bold tracking-tight;
+  }
+  h2 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
+  }
+  h3 {
+    @apply text-2xl font-bold;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.6s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-in;
+}
+
+@keyframes van-move {
+  0% {
+    transform: translateX(-100px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100px);
+  }
+}
+
+@keyframes van-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes van-drive {
+  0% {
+    transform: translateX(-400px);
+  }
+  100% {
+    transform: translateX(800px);
+  }
+}
+
+@keyframes van-entrance {
+  0% {
+    opacity: 1;
+    transform: translateX(-500px);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(1200px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(1200px);
+  }
+}
+
+@keyframes van-reappear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-van-move {
+  animation: van-move 3s ease-in-out infinite;
+}
+
+.animate-van-bounce {
+  animation: van-bounce 2s ease-in-out infinite;
+}
+
+.animate-van-drive {
+  animation: van-drive 8s linear infinite;
+}
+
+@keyframes van-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-van-float {
+  animation: van-float 3s ease-in-out infinite;
+}
+
+/* Added animation for van entrance effect on page load */
+.animate-van-entrance {
+  animation: van-entrance 4s ease-in-out forwards;
+}
+
+.animate-van-reappear {
+  animation: van-reappear 0.2s ease-in forwards;
+  opacity: 0;
+}
+
+@keyframes float-slow {
+  0% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(-20px) translateX(10px) rotate(3deg);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 10s ease-in-out infinite;
+}
