@@ -148,11 +148,9 @@ export default function ServicesPage() {
                 </div>
               ) : (
                 <div className="animate-van-reappear flex items-center justify-center">
-                  <Image
-                    src="/moving-van.png"
+                  <img
+                    src={`${process.env.NODE_ENV === 'production' ? '/velamoving' : ''}/moving-van.png`}
                     alt="Moving van"
-                    width={500}
-                    height={400}
                     className="w-[500px] h-auto drop-shadow-2xl"
                   />
                 </div>
