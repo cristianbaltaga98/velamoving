@@ -6,7 +6,7 @@ export function AnimatedVan() {
       {/* Van body */}
       <div className="animate-van-move">
         <img
-          src="/velamoving/moving-van.png"
+          src="/moving-van.png"
           alt="Moving van"
           className="w-[500px] h-auto drop-shadow-2xl"
         />
