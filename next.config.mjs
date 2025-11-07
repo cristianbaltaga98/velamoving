@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: process.env.NODE_ENV === 'production' ? '/velamoving' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/velamoving' : '',
+  // No basePath needed for custom domain
   typescript: {
     ignoreBuildErrors: true,
   },
