@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  // No basePath needed for custom domain
+  basePath: '/velamoving',
+  assetPrefix: '/velamoving',
   typescript: {
     ignoreBuildErrors: true,
   },
