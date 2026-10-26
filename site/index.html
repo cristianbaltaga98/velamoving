@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiS Interiors | Architectural and interior 3D visualisation</title>
+<meta name="description" content="Photoreal architectural and interior 3D visualisation for architects, developers, interior studios and kitchen and furniture manufacturers.">
+<link rel="icon" href="img/logo-dark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1b1a18;
+  --text: #3d3a35;
+  --muted: #8a847a;
+  --base: #ffffff;
+  --panel: #f2f0ec;
+  --line: #e4e0d9;
+  --dark: #1e1d1b;
+  --serif: "Cormorant Garamond", "Bodoni 72", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); font-weight: 400; color: var(--text); background: var(--base); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid #b08d5f; outline-offset: 3px; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); line-height: 1.1; }
+h2 { font-size: clamp(34px, 3.4vw, 50px); }
+.lead { font-size: 18px; color: var(--text); max-width: 58ch; }
+
+.top { position: fixed; top: 0; left: 0; right: 0; z-index: 20; transition: background .3s, box-shadow .3s; }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 92px; transition: height .3s; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand img { height: 66px; width: auto; transition: height .3s; }
+.brand .dark { display: none; }
+.top nav { display: flex; align-items: center; gap: 34px; font-size: 14px; color: #fff; letter-spacing: 0.02em; }
+.top nav a:not(.cta):hover { opacity: .7; }
+.cta { border: 1px solid currentColor; padding: 10px 20px; }
+.top.solid { background: rgba(255,255,255,0.97); box-shadow: 0 1px 0 var(--line); }
+.top.solid .wrap { height: 72px; }
+.top.solid .brand img { height: 50px; }
+.top.solid .brand .light { display: none; }
+.top.solid .brand .dark { display: block; }
+.top.solid nav { color: var(--ink); }
+
+.hero { position: relative; height: 100vh; min-height: 620px; max-height: 1100px; overflow: hidden; background: var(--dark); color: #fff; }
+.slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.6s ease; }
+.slide.on { opacity: 1; }
+.slide img { width: 100%; height: 100%; object-fit: cover; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.78) 100%), linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 55%); pointer-events: none; }
+.hero .wrap { position: absolute; left: 0; right: 0; bottom: 64px; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+.hero h1 { color: #fff; font-size: clamp(40px, 5.2vw, 76px); max-width: 17ch; }
+.hero p { margin-top: 16px; font-size: 17px; color: rgba(255,255,255,0.85); max-width: 48ch; }
+.hero .meta { text-align: right; font-size: 13px; color: rgba(255,255,255,0.8); min-width: 220px; }
+.dots { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+.dots button { width: 34px; height: 2px; border: 0; background: rgba(255,255,255,0.35); cursor: pointer; padding: 0; }
+.dots button.on { background: #fff; }
+
+section { padding: 130px 0; }
+.intro .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; }
+.clients { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; }
+.clients span { font-size: 13px; color: var(--text); border: 1px solid var(--line); padding: 7px 14px; }
+
+#work { padding-top: 0; }
+.work-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 44px; gap: 24px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 14px; }
+.filters button { background: none; border: 0; font: inherit; color: var(--muted); cursor: pointer; padding: 4px 0; border-bottom: 1px solid transparent; }
+.filters button.on { color: var(--ink); border-bottom-color: var(--ink); }
+.gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+.gallery figure { cursor: zoom-in; }
+.gallery figure.hide { display: none; }
+.gallery .frame { overflow: hidden; background: var(--panel); aspect-ratio: 3 / 2; }
+.gallery .w8 { grid-column: span 8; } .gallery .w4 { grid-column: span 4; } .gallery .w6 { grid-column: span 6; } .gallery .w4 .frame { aspect-ratio: auto; height: calc(100% - 34px); }
+.gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.gallery figure:hover img { transform: scale(1.03); }
+.gallery figcaption { font-size: 13px; color: var(--muted); padding-top: 10px; height: 34px; }
+
+.services { background: var(--panel); }
+.services .grid { margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+.service .frame { aspect-ratio: 4 / 5; overflow: hidden; background: #e6e2db; }
+.service img { width: 100%; height: 100%; object-fit: cover; }
+.service h3 { font-size: 26px; margin-top: 22px; }
+.service p { font-size: 15px; margin-top: 8px; }
+
+.process .wrap { display: grid; grid-template-columns: 4fr 8fr; gap: 80px; }
+.steps { list-style: none; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 70px 1fr; gap: 20px; padding: 26px 0; border-top: 1px solid var(--line); }
+.steps li:last-child { border-bottom: 1px solid var(--line); }
+.steps li::before { content: "0" counter(s); font-family: var(--serif); font-size: 30px; color: var(--muted); line-height: 1; }
+.steps h3 { font-size: 24px; }
+.steps p { margin-top: 4px; font-size: 15px; }
+
+.trial { position: relative; color: #fff; padding: 0; }
+.trial img { width: 100%; height: 560px; object-fit: cover; }
+.trial::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0) 100%); }
+.trial .wrap { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: center; }
+.trial h2 { color: #fff; max-width: 16ch; }
+.trial p { margin-top: 16px; max-width: 46ch; color: rgba(255,255,255,0.85); }
+.btn { display: inline-block; margin-top: 30px; padding: 15px 30px; font-size: 14px; letter-spacing: 0.02em; border: 1px solid #fff; background: #fff; color: var(--ink); align-self: flex-start; transition: background .25s, color .25s; }
+.btn:hover { background: transparent; color: #fff; }
+
+.contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+.people { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.people h3 { font-size: 24px; }
+.people .role { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.people p { font-size: 15px; }
+.details { border-top: 1px solid var(--ink); }
+.details div { display: grid; grid-template-columns: 140px 1fr; padding: 20px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
+.details dt { color: var(--muted); font-size: 14px; }
+.details dd { color: var(--ink); }
+.dl { display: inline-block; margin-top: 30px; padding: 15px 30px; font-size: 14px; background: var(--ink); color: #fff; border: 1px solid var(--ink); transition: background .25s, color .25s; }
+.dl:hover { background: transparent; color: var(--ink); }
+.todo { background: #fff2a8; padding: 0 4px; }
+
+footer { background: var(--dark); color: #a39d93; font-size: 13px; padding: 44px 0; }
+footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+footer img { height: 46px; }
+footer a:hover { color: #fff; }
+
+dialog { border: 0; padding: 0; background: transparent; max-width: 94vw; max-height: 94vh; margin: auto; }
+dialog::backdrop { background: rgba(10,10,10,0.92); }
+dialog img { max-width: 94vw; max-height: 86vh; width: auto; height: auto; }
+dialog p { color: #ccc; font-size: 14px; margin-top: 10px; }
+dialog button { position: fixed; top: 20px; right: 28px; background: none; border: 0; color: #fff; font-size: 34px; cursor: pointer; font-family: var(--sans); font-weight: 300; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .slide, .gallery img { transition: none; } }
+@media (max-width: 960px) {
+  .wrap { padding: 0 20px; }
+  .top nav a:not(.cta) { display: none; }
+  .brand img { height: 42px; }
+  section { padding: 84px 0; }
+  .hero .wrap { flex-direction: column; align-items: flex-start; bottom: 40px; }
+  .hero .meta { text-align: left; }
+  .dots { justify-content: flex-start; }
+  .intro .wrap, .process .wrap, .contact .wrap { grid-template-columns: 1fr; gap: 40px; }
+  .work-head { flex-direction: column; align-items: flex-start; }
+  .gallery { grid-template-columns: 1fr; }
+  .gallery .w8, .gallery .w4, .gallery .w6 { grid-column: auto; }
+  .gallery .w4 .frame { aspect-ratio: 3 / 2; height: auto; }
+  .services .grid { grid-template-columns: 1fr 1fr; }
+  .people { grid-template-columns: 1fr; }
+  .details div { grid-template-columns: 1fr; gap: 2px; }
+  .trial img { height: 520px; }
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="DiS Interiors home">
+      <img class="light" src="img/logo-light.png" alt="DiS Interiors">
+      <img class="dark" src="img/logo-dark.png" alt="DiS Interiors">
+    </a>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a class="cta" href="#contact">Request a quote</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-label="Featured work">
+  <div class="slide on"><img src="img/33-1920.webp" srcset="img/33-640.webp 640w, img/33-1200.webp 1200w, img/33-1920.webp 1920w" sizes="100vw" alt="Hillside hotel and spa resort, aerial view" fetchpriority="high"></div>
+  <div class="slide"><img data-srcset="img/19-640.webp 640w, img/19-1200.webp 1200w, img/19-1920.webp 1920w" sizes="100vw" alt="Hotel lounge bar"></div>
+  <div class="slide"><img data-srcset="img/30-640.webp 640w, img/30-1200.webp 1200w, img/30-1920.webp 1920w" sizes="100vw" alt="Residential conversion, UK"></div>
+  <div class="slide"><img data-srcset="img/84-640.webp 640w, img/84-1200.webp 1200w, img/84-1920.webp 1920w" sizes="100vw" alt="Fitted kitchen"></div>
+  <div class="wrap">
+    <div>
+      <h1>Architectural and interior visualisation</h1>
+      <p>Photoreal CGI for architects, developers, interior studios and kitchen and furniture manufacturers.</p>
+    </div>
+    <div class="meta">
+      <span id="slide-cap">Hotel and spa resort, aerial view</span>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+</section>
+
+<section class="intro">
+  <div class="wrap">
+    <h2>Your design, rendered to the standard your clients expect</h2>
+    <div>
+      <p class="lead">DiS Interiors is a 3D visualisation studio. Your team handles the design, drawings and measurements; we turn them into photoreal images for planning, marketing and client approval.</p>
+      <p class="lead" style="margin-top:16px">We work as an extension of your team on overflow and white-label projects, in your style and under your name. For over ten years we have delivered hotel, residential and product CGI for studios in Switzerland, Germany and the UK.</p>
+      <div class="clients">
+        <span>Architects</span><span>Residential developers</span><span>Interior design studios</span><span>Kitchen and furniture manufacturers</span><span>Hospitality</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="work-head">
+      <h2>Selected work</h2>
+      <div class="filters" id="filters">
+        <button class="on" data-f="all">All</button>
+        <button data-f="hosp">Hospitality</button>
+        <button data-f="res">Residential</button>
+        <button data-f="int">Interiors</button>
+        <button data-f="prod">Kitchens and product</button>
+        <button data-f="work">Workplace</button>
+      </div>
+    </div>
+    <div class="gallery" id="gallery">
+      <figure class="w8" data-c="hosp"><div class="frame"><img src="img/19-1200.webp" srcset="img/19-640.webp 640w, img/19-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Hotel lounge bar" loading="lazy" decoding="async"></div><figcaption>Hotel lounge bar</figcaption></figure>
+      <figure class="w4" data-c="hosp"><div class="frame"><img src="img/35-1200.webp" srcset="img/35-640.webp 640w, img/35-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Hotel guest room" loading="lazy" decoding="async"></div><figcaption>Hotel guest room</figcaption></figure>
+      <figure class="w6" data-c="res"><div class="frame"><img src="img/30-1200.webp" srcset="img/30-640.webp 640w, img/30-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Residential conversion, UK" loading="lazy" decoding="async"></div><figcaption>Residential conversion, UK</figcaption></figure>
+      <figure class="w6" data-c="res"><div class="frame"><img src="img/64-1200.webp" srcset="img/64-640.webp 640w, img/64-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Contemporary house at dusk" loading="lazy" decoding="async"></div><figcaption>Contemporary house, dusk</figcaption></figure>
+      <figure class="w4" data-c="hosp"><div class="frame"><img src="img/29-1200.webp" srcset="img/29-640.webp 640w, img/29-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Hotel fitness area" loading="lazy" decoding="async"></div><figcaption>Hotel fitness area</figcaption></figure>
+      <figure class="w8" data-c="hosp"><div class="frame"><img src="img/00-1200.webp" srcset="img/00-640.webp 640w, img/00-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Restaurant and bar" loading="lazy" decoding="async"></div><figcaption>Restaurant and bar</figcaption></figure>
+      <figure class="w6" data-c="int"><div class="frame"><img src="img/14-1200.webp" srcset="img/14-640.webp 640w, img/14-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Open-plan kitchen and living room" loading="lazy" decoding="async"></div><figcaption>Open-plan kitchen and living</figcaption></figure>
+      <figure class="w6" data-c="int"><div class="frame"><img src="img/52-1200.webp" srcset="img/52-640.webp 640w, img/52-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Living room in a private residence" loading="lazy" decoding="async"></div><figcaption>Living room, private residence</figcaption></figure>
+      <figure class="w8" data-c="res"><div class="frame"><img src="img/32-1200.webp" srcset="img/32-640.webp 640w, img/32-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Hotel pool and gardens, aerial view" loading="lazy" decoding="async"></div><figcaption>Hotel pool and gardens, aerial</figcaption></figure>
+      <figure class="w4" data-c="res"><div class="frame"><img src="img/39-1200.webp" srcset="img/39-640.webp 640w, img/39-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Chalet-style housing development" loading="lazy" decoding="async"></div><figcaption>Chalet-style housing development</figcaption></figure>
+      <figure class="w6" data-c="prod"><div class="frame"><img src="img/84-1200.webp" srcset="img/84-640.webp 640w, img/84-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Fitted kitchen" loading="lazy" decoding="async"></div><figcaption>Fitted kitchen</figcaption></figure>
+      <figure class="w6" data-c="prod"><div class="frame"><img src="img/74-1200.webp" srcset="img/74-640.webp 640w, img/74-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Kitchen island" loading="lazy" decoding="async"></div><figcaption>Kitchen island</figcaption></figure>
+      <figure class="w4" data-c="hosp"><div class="frame"><img src="img/78-1200.webp" srcset="img/78-640.webp 640w, img/78-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Delicatessen and food hall" loading="lazy" decoding="async"></div><figcaption>Delicatessen and food hall</figcaption></figure>
+      <figure class="w8" data-c="res"><div class="frame"><img src="img/31-1200.webp" srcset="img/31-640.webp 640w, img/31-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Residential scheme, aerial view" loading="lazy" decoding="async"></div><figcaption>Residential scheme, aerial view</figcaption></figure>
+      <figure class="w6" data-c="int"><div class="frame"><img src="img/85-1200.webp" srcset="img/85-640.webp 640w, img/85-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Kitchen and dining room" loading="lazy" decoding="async"></div><figcaption>Kitchen and dining</figcaption></figure>
+      <figure class="w6" data-c="int"><div class="frame"><img src="img/58-1200.webp" srcset="img/58-640.webp 640w, img/58-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Bedroom" loading="lazy" decoding="async"></div><figcaption>Bedroom</figcaption></figure>
+      <figure class="w8" data-c="work"><div class="frame"><img src="img/45-1200.webp" srcset="img/45-640.webp 640w, img/45-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Office breakout space" loading="lazy" decoding="async"></div><figcaption>Office breakout space</figcaption></figure>
+      <figure class="w4" data-c="work"><div class="frame"><img src="img/73-1200.webp" srcset="img/73-640.webp 640w, img/73-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Office with glazed meeting rooms" loading="lazy" decoding="async"></div><figcaption>Office with glazed meeting rooms</figcaption></figure>
+      <figure class="w6" data-c="res"><div class="frame"><img src="img/86-1200.webp" srcset="img/86-640.webp 640w, img/86-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Family house, street view" loading="lazy" decoding="async"></div><figcaption>Family house, street view</figcaption></figure>
+      <figure class="w6" data-c="res"><div class="frame"><img src="img/09-1200.webp" srcset="img/09-640.webp 640w, img/09-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Apartment development, street view" loading="lazy" decoding="async"></div><figcaption>Apartment development, street view</figcaption></figure>
+      <figure class="w4" data-c="prod"><div class="frame"><img src="img/66-1200.webp" srcset="img/66-640.webp 640w, img/66-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Compact kitchen catalogue scene" loading="lazy" decoding="async"></div><figcaption>Compact kitchen, catalogue scene</figcaption></figure>
+      <figure class="w8" data-c="hosp"><div class="frame"><img src="img/50-1200.webp" srcset="img/50-640.webp 640w, img/50-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Restaurant interior" loading="lazy" decoding="async"></div><figcaption>Restaurant interior</figcaption></figure>
+      <figure class="w6" data-c="work"><div class="frame"><img src="img/07-1200.webp" srcset="img/07-640.webp 640w, img/07-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Café bar" loading="lazy" decoding="async"></div><figcaption>Café bar</figcaption></figure>
+      <figure class="w6" data-c="work"><div class="frame"><img src="img/12-1200.webp" srcset="img/12-640.webp 640w, img/12-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="Restaurant and lounge" loading="lazy" decoding="async"></div><figcaption>Restaurant and lounge</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="services">
+  <div class="wrap">
+    <h2>Services</h2>
+    <div class="grid">
+      <div class="service"><div class="frame"><img src="img/35-1200.webp" srcset="img/35-640.webp 640w, img/35-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><h3>Interior CGI</h3><p>Hotels, restaurants, offices and homes, from a single hero view to a full set for a brochure.</p></div>
+      <div class="service"><div class="frame"><img src="img/30-1200.webp" srcset="img/30-640.webp 640w, img/30-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><h3>Exterior CGI and aerials</h3><p>Eye-level and aerial views for planning applications, sales launches and hoardings.</p></div>
+      <div class="service"><div class="frame"><img src="img/74-1200.webp" srcset="img/74-640.webp 640w, img/74-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><h3>Kitchen and product scenes</h3><p>Lifestyle scenes and catalogue images for kitchen, bedroom and furniture manufacturers.</p></div>
+      <div class="service"><div class="frame"><img src="img/45-1200.webp" srcset="img/45-640.webp 640w, img/45-1200.webp 1200w" sizes="(max-width: 960px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><h3>White-label overflow</h3><p>Extra capacity for studios with in-house visualisers, delivered unbranded in your house style.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="process" class="process">
+  <div class="wrap">
+    <div>
+      <h2>How we work</h2>
+      <p class="lead" style="margin-top:20px">Clear scope, fixed price and a delivery date agreed before work starts.</p>
+    </div>
+    <ol class="steps">
+      <li><div><h3>Brief</h3><p>You send plans, elevations or a 3D model, with references and the views you need.</p></div></li>
+      <li><div><h3>Quote</h3><p>We confirm scope, price and delivery date in writing, usually within one working day.</p></div></li>
+      <li><div><h3>Composition</h3><p>We send draft camera views for your approval before rendering.</p></div></li>
+      <li><div><h3>Materials and lighting</h3><p>You comment on near-final images. Two rounds of revisions are included.</p></div></li>
+      <li><div><h3>Delivery</h3><p>Final high-resolution images, unbranded and ready for print and web.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="trial" aria-labelledby="trial-h">
+  <img src="img/32-1200.webp" srcset="img/32-640.webp 640w, img/32-1200.webp 1200w, img/32-1920.webp 1920w" sizes="100vw" alt="" loading="lazy" decoding="async">
+  <div class="wrap">
+    <h2 id="trial-h">Start with one image, at no cost</h2>
+    <p>For new studios we render one view from a real project free of charge, so you can judge quality, communication and turnaround before you commit.</p>
+    <a class="btn" href="#contact">Request a test image</a>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div>
+      <h2>Request a quote</h2>
+      <p class="lead" style="margin-top:20px">Send plans or a model and the views you need. We reply within one working day with a fixed price and a delivery date.</p>
+      <div class="people">
+        <div><h3>Cristian Baltaga</h3><div class="role">Project manager</div><p>Your single point of contact on every project, from brief and quote through reviews to final delivery. Based in the UK.</p></div>
+        <div><h3>Sergiu Carpovici</h3><div class="role">Lead visualiser</div><p>Over ten years in 3ds Max, Corona and Photoshop, leading our team of visualisers.</p></div>
+      </div>
+    </div>
+    <div>
+      <dl class="details">
+        <div><dt>Email</dt><dd><span class="todo">email on DiS domain</span></dd></div>
+        <div><dt>Phone</dt><dd><span class="todo">UK phone number</span></dd></div>
+        <div><dt>LinkedIn</dt><dd><span class="todo">Sergiu LinkedIn URL</span></dd></div>
+        <div><dt>Behance</dt><dd><a href="https://www.behance.net/disinterior">behance.net/disinterior</a></dd></div>
+      </dl>
+      <a class="dl" href="DiS-Interiors-Portfolio.pdf">Download the portfolio (PDF)</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="img/logo-light.png" alt="DiS Interiors">
+    <span>Architectural and interior 3D visualisation</span>
+    <a href="https://www.behance.net/disinterior">Behance</a>
+  </div>
+</footer>
+
+<dialog id="box"><button aria-label="Close" onclick="box.close()">&times;</button><img id="box-img" alt=""><p id="box-cap"></p></dialog>
+
+<script>
+const top_ = document.getElementById("top");
+const onScroll = () => top_.classList.toggle("solid", window.scrollY > window.innerHeight * 0.75);
+addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+const slides = [...document.querySelectorAll(".slide")];
+const dots = document.getElementById("dots");
+const cap = document.getElementById("slide-cap");
+let cur = 0, timer;
+function go(i) {
+  slides[cur].classList.remove("on"); dots.children[cur].classList.remove("on");
+  cur = i;
+  slides[cur].classList.add("on"); dots.children[cur].classList.add("on");
+  cap.textContent = slides[cur].querySelector("img").alt;
+}
+slides.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.setAttribute("aria-label", "Show image " + (i + 1));
+  if (i === 0) b.classList.add("on");
+  b.onclick = () => { go(i); restart(); };
+  dots.appendChild(b);
+});
+function restart() { clearInterval(timer); if (!matchMedia("(prefers-reduced-motion: reduce)").matches) timer = setInterval(() => go((cur + 1) % slides.length), 6000); }
+addEventListener("load", () => { slides.forEach(s => { const i = s.querySelector("img"); if (i.dataset.srcset) { i.srcset = i.dataset.srcset; } }); restart(); });
+
+document.getElementById("filters").addEventListener("click", e => {
+  const f = e.target.dataset.f; if (!f) return;
+  document.querySelectorAll("#filters button").forEach(b => b.classList.toggle("on", b === e.target));
+  document.querySelectorAll("#gallery figure").forEach(fig => fig.classList.toggle("hide", f !== "all" && fig.dataset.c !== f));
+});
+
+const box = document.getElementById("box");
+document.getElementById("gallery").addEventListener("click", e => {
+  const fig = e.target.closest("figure"); if (!fig) return;
+  const img = fig.querySelector("img");
+  document.getElementById("box-img").src = img.currentSrc.replace(/-(640|1200)\.webp$/, "-1920.webp");
+  document.getElementById("box-cap").textContent = img.alt;
+  box.showModal();
+});
+box.addEventListener("click", e => { if (e.target === box) box.close(); });
+</script>
+</body>
+</html>
